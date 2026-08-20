@@ -1,22 +1,39 @@
 <!doctype html>
-<html lang="en">
+<html lang="sk">
     <head>
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="initial-scale=1,user-scalable=no,maximum-scale=1,width=device-width">
         <meta name="mobile-web-app-capable" content="yes">
         <meta name="apple-mobile-web-app-capable" content="yes">
+        
         <link rel="stylesheet" href="./resources/ol.css">
         <link rel="stylesheet" href="resources/fontawesome-all.min.css">
         <link href="resources/photon-geocoder-autocomplete.min.css" rel="stylesheet">
         <link rel="stylesheet" href="./resources/ol-layerswitcher.css">
         <link rel="stylesheet" href="./resources/qgis2web.css">
+        
         <style>
         html, body {
-            background-color: #ffffff;
+            background-color: transparent;
+            width: 100%;
+            height: 100%;
+            padding: 0;
+            margin: 0;
         }
+
+        #map {
+            width: 100%;
+            height: calc(100% - 45px); /* Nechá priestor pre tlačidlo hore */
+            padding: 0;
+            margin: 0;
+            border: 5px solid #444;
+            box-sizing: border-box;
+        }
+
+        /* Štýlovanie ovládacích prvkov OpenLayers */
         .ol-control > * {
-            background-color: #f8f8f8!important;
+            background-color: transparent!important;
             color: #444444!important;
             border-radius: 0px;
         }
@@ -33,34 +50,100 @@
             background-color: rgba(255,255,255,.4) !important;
             padding: 2px !important;
         } 
-        </style>
 
-        <style>
-        html, body, #map {
-            width: 100%;
-            height: 100%;
-            padding: 0;
-            margin: 0;
+        /* Štýlovanie tlačidla tlače */
+        .print-container {
+            display: flex;
+            justify-content: flex-end; /* Tlačidlo vpravo */
+            padding: 6px 10px;
+            background-color: #f4f4f4;
+        }
+
+        .print-btn {
+            padding: 6px 14px;
+            font-size: 14px;
+            font-weight: bold;
+            background-color: #444;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .print-btn:hover {
+            background-color: #222;
+        }
+
+        /* ------------------------------------------------------------------
+        Úprava pre tlač (Ctrl+P / Tlačidlo)
+        ------------------------------------------------------------------ */
+        @media print {
+            /* Skryje tlačidlo pri tlači */
+            .print-container {
+                display: none !important;
+            }
+
+            /* Prispôsobenie mapy na papieri */
+            #map {
+                height: 90vh !important;
+                width: 100% !important;
+                border: 2px solid #000;
+                break-inside: avoid;
+                page-break-inside: avoid;
+            }
+
+            @page {
+                margin: 1cm;
+            }
         }
         </style>
-        <title></title>
+    <title>Mapa biotopov CHKO Kysuce</title>
     </head>
     <body>
+    
+        <!-- Tlačidlo vpravo hore nad mapou -->
+        <div class="print-container">
+            <button onclick="window.print()" class="print-btn">
+                🖨️ Tlačiť mapu
+            </button>
+        </div>
+
+        <!-- Jediné mapové okno s pop-up oknom -->
         <div id="map">
             <div id="popup" class="ol-popup">
                 <a href="#" id="popup-closer" class="ol-popup-closer"></a>
                 <div id="popup-content"></div>
             </div>
         </div>
+
+        <!-- Skripty OpenLayers a qgis2web -->
         <script src="resources/qgis2web_expressions.js"></script>
         <script src="./resources/functions.js"></script>
         <script src="./resources/ol.js"></script>
         <script src="./resources/ol-layerswitcher.js"></script>
         <script src="resources/photon-geocoder-autocomplete.min.js"></script>
-        <script src="layers/Biotopy_3.js"></script><script src="layers/zemiaeurpskehovznamu_4.js"></script><script src="layers/HraniceCHKOKysuce_5.js"></script>
-        <script src="styles/Biotopy_3_style.js"></script><script src="styles/zemiaeurpskehovznamu_4_style.js"></script><script src="styles/HraniceCHKOKysuce_5_style.js"></script>
+        <script src="resources/olms.js"></script>
+        <script src="layers/Biotopy_3.js"></script>
+        <script src="layers/JPRLCHKOKysuce_4.js"></script>
+        <script src="layers/HraniceCHKOKysuce_5.js"></script>
+        <script src="layers/zemiaeurpskehovznamu_6.js"></script>
+        <script src="styles/Biotopy_3_style.js"></script>
+        <script src="styles/JPRLCHKOKysuce_4_style.js"></script>
+        <script src="styles/HraniceCHKOKysuce_5_style.js"></script>
+        <script src="styles/zemiaeurpskehovznamu_6_style.js"></script>
         <script src="./layers/layers.js" type="text/javascript"></script> 
         <script src="./resources/Autolinker.min.js"></script>
-        <script src="./resources/qgis2web.js"></script>        
+        <script src="./resources/qgis2web.js"></script>  
+        
+        <footer style="text-align: center;">
+            <h2 id="map-title"></h2>
+            <p>Tematické spracovanie &copy; ŠOPSR, Správa CHKO Kysuce.</p>
+        </footer>
+
+        <script>
+            document.getElementById('map-title').textContent = document.title;
+        </script>
+
     </body>
 </html>

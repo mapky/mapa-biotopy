@@ -13,9 +13,11 @@ var style_HraniceCHKOKysuce_5 = function(feature, resolution){
     var labelFill = "#000000";
     var bufferColor = "";
     var bufferWidth = 0;
-    var textAlign = "left";
-    var offsetX = 0;
-    var offsetY = 0;
+    var textAlign = 'left';
+    var offsetX = 8;
+    var offsetY = 3;
+    var overflow = false;
+    var repeat = 0;
     var placement = 'point';
     if ("" !== null) {
         labelText = String("");
@@ -24,7 +26,7 @@ var style_HraniceCHKOKysuce_5 = function(feature, resolution){
         stroke: new ol.style.Stroke({color: 'rgba(31,5,210,1.0)', lineDash: [19.0,3.8,7.6,3.8], lineCap: 'butt', lineJoin: 'miter', width: 3.8}),
         text: createTextStyle(feature, resolution, labelText, labelFont,
                               labelFill, placement, bufferColor,
-                              bufferWidth)
+                              bufferWidth, textAlign, offsetX, offsetY, overflow, repeat)
     })];
 
     return style;
